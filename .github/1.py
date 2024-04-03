@@ -184,7 +184,7 @@ def check_allipsprivate_pr(ip, filepath):
             if path in existing_privip_keys:
                 return True, None
             else:
-                if index == len(strings) - 1:
+                if index == len(privip_paths) - 1:
                     return False, privip_paths
                 else:
                     continue
