@@ -23,6 +23,8 @@ test5:
 
 test6: 92.68.4.4
 
+private_db: 192.168.3.4
+
 private_web:
    1:
     - 10.2.3.4
