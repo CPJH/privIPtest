@@ -109,8 +109,8 @@ def detect_privateip_pr(filepath):
                     if is_private_ip(j):
                         if j not in private_ip_list:
                             private_ip_list.append(j)
+    privip_dict = {}
     if private_ip_list:
-        privip_dict = {}
         for i in private_ip_list:
             if not check_allipsprivate_pr(i, filepath)[0]:
                  privip_dict[i] = check_allipsprivate_pr(i, filepath)[1]
