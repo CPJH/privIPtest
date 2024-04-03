@@ -173,14 +173,21 @@ def check_allipsprivate_pr(ip, filepath):
     for k, v in private_ips.items():
         if v == ip:
             privip_paths.append(k)
-    for path in privip_paths:
+    for index, path in enumerate(privip_paths):
         if '][' in path:
             parts = path.split('][') 
             check_path =  ']['.join(parts[:-1]) + ']'
         else:
+            if check_key_contains_priv_terms(path):
+                return True, None
             existing_privip_keys = scan_for_priv_ip_master(filepath)[0]
             if path in existing_privip_keys:
                 return True, None
+            else:
+                if index == len(strings) - 1:
+                    return False, privip_paths
+                else:
+                    continue
         if check_key_contains_priv_terms(check_path):
             return True, None
         check_path_val = eval("yaml_data" + check_path)
@@ -193,7 +200,6 @@ def check_allipsprivate_pr(ip, filepath):
     return False, privip_paths
                     
 def check_key_contains_priv_terms(input_string):
-    # Check if the input string contains "private" or "priv"
     if "priv" in input_string.lower():
         return True
     return False
