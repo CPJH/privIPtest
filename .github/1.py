@@ -228,7 +228,6 @@ def check_all_ips_priv_dict(ip_dict):
 def scan_for_priv_ip_master(filepath):
     changed_file = filepath
     orig_file = changed_file + ".master"
-    print(f"\nChecking for private IP Addresses in file {changed_file}\n")
     updated_file = orig_file + "-updated"
     remove_invalid_yaml_lines(orig_file, updated_file)
     with open(updated_file, 'r') as f:
