@@ -78,7 +78,7 @@ def parse_diff_data(diff_data):
 def detect_privateip_pr(filepath):
     changed_file = filepath
     diff_dict = {}
-    existing_privips = scan_for_priv_ip_master(filepath)
+    existing_privips = scan_for_priv_ip_master(filepath)[1]
     with open(changed_file + ".gitdiff", 'r') as file:
         gitdiff_file_contents = file.read()
     diff_structures = parse_diff_data(gitdiff_file_contents)
@@ -178,7 +178,9 @@ def check_allipsprivate_pr(ip, filepath):
             parts = path.split('][') 
             check_path =  ']['.join(parts[:-1]) + ']'
         else:
-            check_path = path
+            existing_privip_keys = scan_for_priv_ip_master(filepath)[0]
+            if path in existing_privip_keys:
+                return True, None
         if check_key_contains_priv_terms(check_path):
             return True, None
         check_path_val = eval("yaml_data" + check_path)
@@ -187,7 +189,7 @@ def check_allipsprivate_pr(ip, filepath):
                 return True, None
         elif isinstance(check_path_val, dict):
             if check_all_ips_priv_dict(check_path_val):
-                return True, None 
+                return True, None
     return False, privip_paths
                     
 def check_key_contains_priv_terms(input_string):
@@ -233,8 +235,9 @@ def scan_for_priv_ip_master(filepath):
         yaml_data = yaml.safe_load(f)
     private_ips, count = analyze_yaml(yaml_data)
     os.remove(updated_file)
+    privippaths = private_ips.keys()
     privips = private_ips.values()
-    return privips
+    return privippaths, privips
 
 def scan_for_priv_ip(dir):
     for filename in os.listdir(dir):
