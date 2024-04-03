@@ -277,4 +277,4 @@ if sys.argv[1:]:                  # if script is called with arguments(files cha
     for path in sys.argv[1:]:     # else if script is called without arguments corresponding to "workflow_dispatch" of Github Actions
         detect_privateip_pr(path) # then check all the files in the master branch
 else:
-    scan_for_priv_ip("network")
+    scan_for_priv_ip("net")
